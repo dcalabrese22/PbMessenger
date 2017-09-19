@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "782508741776",
+    "firebase_url": "https://pbmessages-62c8d.firebaseio.com",
+    "project_id": "pbmessages-62c8d",
+    "storage_bucket": "pbmessages-62c8d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:782508741776:android:66daf3e5af231a89",
+        "android_client_info": {
+          "package_name": "com.dcalabrese22.dan.pbmessenger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "782508741776-n705qbq7g0j7opvtmd6g417vddt7fk6v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dcalabrese22.dan.pbmessenger",
+            "certificate_hash": "2df42eb4cadeaed23caeeea68a27dc15037c9f71"
+          }
+        },
+        {
+          "client_id": "782508741776-ootb05h3c6rigkc004nk1dm8pmurk8di.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARSWVp4hm5E2qGV0ZmtwyR-H6_8_Aid0A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "782508741776-ootb05h3c6rigkc004nk1dm8pmurk8di.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
