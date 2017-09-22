@@ -6,16 +6,22 @@ package com.dcalabrese22.dan.pbmessenger.Objects;
 
 public class PbMessage {
 
+    private String messageId;
     private String body;
     private String date;
     private String sender;
 
     public PbMessage() {}
 
-    public PbMessage(String b, String d, String s) {
-        body = b;
-        date = d;
-        sender = s;
+    public PbMessage(String id, String body, String date, String sender) {
+        messageId = id;
+        this.body = body;
+        this.date = date;
+        this.sender = sender;
+    }
+
+    public String getMessageId() {
+        return messageId;
     }
 
     public String getBody() {

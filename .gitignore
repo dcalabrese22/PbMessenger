@@ -8,5 +8,5 @@
 /captures
 .externalNativeBuild
 /app/src/main/java/com/dcalabrese22/dan/pbmessenger/MyCredentials.java
-
+/app/google-services.json
 
