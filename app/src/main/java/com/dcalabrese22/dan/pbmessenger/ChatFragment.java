@@ -135,7 +135,7 @@ public class ChatFragment extends Fragment {
                             Map<String, Object> m = new HashMap<>();
                             m.put(nextKey, newMessage);
                             messagRef.updateChildren(m);
-                            .getText().clear();
+                            reply.getText().clear();
                         }
                     }
 
