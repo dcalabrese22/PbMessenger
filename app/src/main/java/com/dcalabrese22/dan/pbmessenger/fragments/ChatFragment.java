@@ -1,4 +1,4 @@
-package com.dcalabrese22.dan.pbmessenger;
+package com.dcalabrese22.dan.pbmessenger.fragments;
 
 
 import android.content.Context;
@@ -20,8 +20,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.dcalabrese22.dan.pbmessenger.ChatViewHolder;
+import com.dcalabrese22.dan.pbmessenger.MainActivity;
 import com.dcalabrese22.dan.pbmessenger.Objects.PbConversation;
 import com.dcalabrese22.dan.pbmessenger.Objects.PbMessage;
+import com.dcalabrese22.dan.pbmessenger.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

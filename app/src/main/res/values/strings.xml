@@ -17,6 +17,11 @@
     <string name="auth_failed">The email or password entered is invalid</string>
     <string name="enter_credentials">Please enter credentials before continuing</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="new_message_fragment_title">New Conversation</string>
+    <string name="new_message_name_hint">Name</string>
+    <string name="new_message_subject_hint">Subject</string>
+    <string name="new_message_body_hint">Enter message</string>
+
+
 </resources>

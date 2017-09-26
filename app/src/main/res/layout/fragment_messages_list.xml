@@ -2,11 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dcalabrese22.dan.pbmessenger.MessagesListFragment">
+    android:orientation="vertical"
+    tools:context="com.dcalabrese22.dan.pbmessenger.fragments.MessagesListFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_conversations"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/ic_add_white_24px"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:id="@+id/message_list_fab"/>
 
 </FrameLayout>

@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.dcalabrese22.dan.pbmessenger.fragments.ChatFragment;
+import com.dcalabrese22.dan.pbmessenger.fragments.MessagesListFragment;
 import com.dcalabrese22.dan.pbmessenger.interfaces.MessageExtrasListener;
 
 public class MainActivity extends AppCompatActivity implements MessageExtrasListener {

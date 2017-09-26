@@ -1,9 +1,11 @@
-package com.dcalabrese22.dan.pbmessenger;
+package com.dcalabrese22.dan.pbmessenger.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dcalabrese22.dan.pbmessenger.ConversationViewHolder;
 import com.dcalabrese22.dan.pbmessenger.Objects.PbConversation;
+import com.dcalabrese22.dan.pbmessenger.R;
 import com.dcalabrese22.dan.pbmessenger.interfaces.ConversationClickListener;
 import com.dcalabrese22.dan.pbmessenger.interfaces.MessageExtrasListener;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -43,6 +47,19 @@ public class MessagesListFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_messages_list, container, false);
+
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.message_list_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NewMessageFragment fragment = new NewMessageFragment();
+                FragmentTransaction transaction = getActivity()
+                        .getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

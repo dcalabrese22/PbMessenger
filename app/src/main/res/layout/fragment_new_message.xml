@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.dcalabrese22.dan.pbmessenger.fragments.NewMessageFragment">
+
+    <AutoCompleteTextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/new_message_edittext_height"
+        android:hint="@string/new_message_name_hint"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="16dp"
+        android:background="@null"
+        android:maxLines="1"
+        android:inputType="textAutoComplete"
+        android:imeOptions="actionNext"
+        android:id="@+id/et_new_message_to" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/new_message_edittext_height"
+        android:hint="@string/new_message_subject_hint"
+        android:background="@null"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="16dp"
+        android:maxLines="2"
+        android:inputType="textAutoComplete"
+        android:imeOptions="actionNext"
+        android:id="@+id/et_new_message_subject"/>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="@string/new_message_body_hint"
+        android:background="@null"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="16dp"
+        android:maxLines="30"
+        android:gravity="top"
+        android:inputType="textCapSentences|textAutoCorrect"
+        android:id="@+id/et_new_message_body"/>
+
+</LinearLayout>
