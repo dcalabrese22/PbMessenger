@@ -1,13 +1,18 @@
 package com.dcalabrese22.dan.pbmessenger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.dcalabrese22.dan.pbmessenger.fragments.ChatFragment;
 import com.dcalabrese22.dan.pbmessenger.fragments.MessagesListFragment;
 import com.dcalabrese22.dan.pbmessenger.interfaces.MessageExtrasListener;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity implements MessageExtrasListener {
 
@@ -48,5 +53,37 @@ public class MainActivity extends AppCompatActivity implements MessageExtrasList
     @Override
     public void getMessageUser(String user) {
         mCorrespondent = user;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            finish();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case  R.id.logout:
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                auth.signOut();
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

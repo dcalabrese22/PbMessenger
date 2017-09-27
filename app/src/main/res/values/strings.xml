@@ -3,7 +3,7 @@
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
+    <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -22,6 +22,8 @@
     <string name="new_message_name_hint">Name</string>
     <string name="new_message_subject_hint">Subject</string>
     <string name="new_message_body_hint">Enter message</string>
+    <string name="pb_messenger">Pinkbike Messenger</string>
+    <string name="logout">Logout</string>
 
 
 </resources>
