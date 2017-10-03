@@ -61,6 +61,8 @@ public class MessagesListFragment extends Fragment {
             }
         });
 
+        final Context context = getContext();
+
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         mUserId = user.getUid();
@@ -85,6 +87,7 @@ public class MessagesListFragment extends Fragment {
                 viewHolder.setSubject(model.getTitle());
                 viewHolder.setUser(model.getUser());
                 viewHolder.setLastMessage(model.getLastMessage());
+                viewHolder.setAvatar(model.getUserImage(), context);
             }
 
             @Override

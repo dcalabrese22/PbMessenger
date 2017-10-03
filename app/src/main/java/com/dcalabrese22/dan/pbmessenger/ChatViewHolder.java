@@ -17,8 +17,6 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
     public ChatViewHolder(View view) {
         super(view);
         mChatBody = (TextView) view.findViewById(R.id.tv_chat_body);
-        mChatSender = (TextView) view.findViewById(R.id.tv_sender);
-        mTimeSent = (TextView) view.findViewById(R.id.tv_time_sent);
 
     }
 
@@ -26,11 +24,4 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
         mChatBody.setText(body);
     }
 
-    public void setChatSender(String sender) {
-        mChatSender.setText(sender);
-    }
-
-    public void setTimeSent(String timeSent) {
-        mTimeSent.setText(timeSent);
-    }
 }

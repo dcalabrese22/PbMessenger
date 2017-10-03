@@ -1,10 +1,5 @@
 package com.dcalabrese22.dan.pbmessenger.Objects;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.util.ArrayList;
-
 /**
  * Created by dan on 9/7/17.
  */
@@ -14,21 +9,22 @@ public class PbConversation {
     private String mId;
     private String mTitle;
     private String mUser;
+    private String mUserImage;
     private String mLastMessage;
 
     public PbConversation() {}
 
-    public PbConversation(String id, String title, String user, String lastMessage) {
+    public PbConversation(String id, String title, String user, String lastMessage, String userImage) {
         mTitle = title;
         mId = id;
         mUser = user;
         mLastMessage = lastMessage;
+        mUserImage = userImage;
 
     }
 
-    public PbConversation(String i, String t) {
-        mTitle = t;
-        mId = i;
+    public String getUserImage() {
+        return mUserImage;
     }
 
     public String getLastMessage() {
@@ -63,9 +59,14 @@ public class PbConversation {
         mLastMessage = message;
     }
 
+    public void setUserImage(String url) {
+        mUserImage = url;
+    }
+
     @Override
     public String toString() {
         return mTitle;
     }
 
 }
+

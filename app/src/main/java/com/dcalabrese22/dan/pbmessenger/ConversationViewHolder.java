@@ -1,10 +1,13 @@
 package com.dcalabrese22.dan.pbmessenger;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dcalabrese22.dan.pbmessenger.interfaces.ConversationClickListener;
+import com.squareup.picasso.Picasso;
 
 import junit.framework.Test;
 
@@ -18,6 +21,7 @@ public class ConversationViewHolder extends RecyclerView.ViewHolder {
     TextView mSubject;
     TextView mUser;
     TextView mLastMessage;
+    ImageView mAvatar;
 
     ConversationClickListener mClickListener;
 
@@ -27,6 +31,7 @@ public class ConversationViewHolder extends RecyclerView.ViewHolder {
 
     public ConversationViewHolder(View view) {
         super(view);
+        mAvatar = (ImageView) view.findViewById(R.id.user_avatar);
         mSubject = (TextView) view.findViewById(R.id.tv_conversation_subject);
         mUser = (TextView) view.findViewById(R.id.tv_conversation_user);
         mLastMessage = (TextView) view.findViewById(R.id.tv_conversation_last_message);
@@ -49,5 +54,11 @@ public class ConversationViewHolder extends RecyclerView.ViewHolder {
 
     public void setLastMessage(String message) {
         mLastMessage.setText(message);
+    }
+
+    public void setAvatar(String urlToImage, Context context) {
+
+        Picasso.with(context).load(urlToImage).into(mAvatar);
+
     }
 }

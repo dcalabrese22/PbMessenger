@@ -3,7 +3,6 @@ package com.dcalabrese22.dan.pbmessenger.fragments;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -11,24 +10,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.dcalabrese22.dan.pbmessenger.ChatViewHolder;
 import com.dcalabrese22.dan.pbmessenger.MainActivity;
-import com.dcalabrese22.dan.pbmessenger.Objects.PbConversation;
 import com.dcalabrese22.dan.pbmessenger.Objects.PbMessage;
 import com.dcalabrese22.dan.pbmessenger.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,9 +35,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 public class ChatFragment extends Fragment {
@@ -164,15 +156,24 @@ public class ChatFragment extends Fragment {
 
         mAdapter = new FirebaseRecyclerAdapter<PbMessage, ChatViewHolder>(
                 PbMessage.class,
-                R.layout.chat,
+                R.layout.chat_incoming,
                 ChatViewHolder.class,
                 reference
         ) {
             @Override
             protected void populateViewHolder(ChatViewHolder viewHolder, PbMessage model, int position) {
                 viewHolder.setChatBody(model.getBody());
-                viewHolder.setChatSender(model.getSender());
-                viewHolder.setTimeSent(model.getDate());
+
+            }
+
+            @Override
+            public int getItemViewType(int position) {
+                return super.getItemViewType(position);
+            }
+
+            @Override
+            public ChatViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                return super.onCreateViewHolder(parent, viewType);
             }
         };
 
