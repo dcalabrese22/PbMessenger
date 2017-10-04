@@ -3,7 +3,8 @@
     <color name="colorPrimary">#b40000</color>
     <color name="colorPrimaryDark">#c80000</color>
     <color name="colorAccent">#448AFF</color>
-    <color name="incoming_bubble">#d3d3d3</color>
-    <color name="outgoing_bubble">#7e7e7e</color>
+    <color name="incoming_bubble">#f2f2f2</color>
+    <color name="outgoing_bubble">#dddddd</color>
+    <color name="background">#e5e5e5</color>
     <color name="fabDiabled">#BDBDBD</color>
 </resources>

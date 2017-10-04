@@ -14,6 +14,8 @@
         completions."
     </string>
 
+    <string name="missing_fields">All fields must be complete before sending</string>
+
     <string name="auth_failed">The email or password entered is invalid</string>
     <string name="enter_credentials">Please enter credentials before continuing</string>
 

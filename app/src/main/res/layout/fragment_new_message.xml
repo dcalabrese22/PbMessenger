@@ -1,48 +1,73 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.dcalabrese22.dan.pbmessenger.fragments.NewMessageFragment">
 
-    <AutoCompleteTextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/new_message_edittext_height"
-        android:hint="@string/new_message_name_hint"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginTop="16dp"
-        android:background="@null"
-        android:maxLines="1"
-        android:inputType="textAutoComplete"
-        android:imeOptions="actionNext"
-        android:id="@+id/et_new_message_to" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/new_message_edittext_height"
-        android:hint="@string/new_message_subject_hint"
-        android:background="@null"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginTop="16dp"
-        android:maxLines="2"
-        android:inputType="textAutoComplete"
-        android:imeOptions="actionNext"
-        android:id="@+id/et_new_message_subject"/>
+        <AutoCompleteTextView
+            android:id="@+id/et_new_message_to"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/new_message_edittext_height"
+            android:layout_marginEnd="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="16dp"
+            android:hint="@string/new_message_name_hint"
+            android:padding="10dp"
+            android:background="@drawable/edittext_box"
+            android:imeOptions="actionNext"
+            android:inputType="textAutoComplete"
+            android:maxLines="1"
+            style="@style/Widget.AppCompat.EditText"/>
+
+        <EditText
+            android:id="@+id/et_new_message_subject"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/new_message_edittext_height"
+            android:layout_marginEnd="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="16dp"
+            android:hint="@string/new_message_subject_hint"
+            android:padding="10dp"
+            android:background="@drawable/edittext_box"
+            android:imeOptions="actionNext"
+            android:inputType="textAutoComplete"
+            android:maxLines="2"
+            style="@style/Widget.AppCompat.EditText"/>
 
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:hint="@string/new_message_body_hint"
-        android:background="@null"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginTop="16dp"
-        android:maxLines="30"
-        android:gravity="top"
-        android:inputType="textCapSentences|textAutoCorrect"
-        android:id="@+id/et_new_message_body"/>
+        <EditText
+            android:id="@+id/et_new_message_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="50dp"
+            android:gravity="top"
+            android:padding="10dp"
+            android:hint="@string/new_message_body_hint"
+            android:background="@drawable/edittext_box"
+            android:lines="10"
+            android:scrollHorizontally="false"
+            android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
+            android:maxLines="30"
+            style="@style/Widget.AppCompat.EditText"/>
 
-</LinearLayout>
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_new_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_send_white_24px" />
+
+</RelativeLayout>
