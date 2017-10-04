@@ -41,7 +41,7 @@ public class ChatFragment extends Fragment {
 
     private String mMessageId;
     private String mCorrespondent;
-    private FirebaseRecyclerAdapter<PbMessage, ChatViewHolder> mAdapter;
+    private FirebaseRecyclerAdapter<PbMessage, RecyclerView.ViewHolder> mAdapter;
 
 
     public ChatFragment() {
@@ -126,7 +126,7 @@ public class ChatFragment extends Fragment {
                             Log.d("User name: ", name);
                             Date now = Calendar.getInstance().getTime();
                             Log.d("Now: ", now.toString());
-                            PbMessage newMessage = new PbMessage(nextKey, body, now.toString(), name, true);
+                            PbMessage newMessage = new PbMessage(nextKey, body, now.toString(), name, "sent");
                             Map<String, Object> m = new HashMap<>();
                             m.put(nextKey, newMessage);
                             messagRef.updateChildren(m);
@@ -154,54 +154,47 @@ public class ChatFragment extends Fragment {
 
         recyclerView.setLayoutManager(ll);
 
-        mAdapter = new FirebaseRecyclerAdapter<PbMessage, ChatViewHolder>(
+        mAdapter = new FirebaseRecyclerAdapter<PbMessage, RecyclerView.ViewHolder>(
                 PbMessage.class,
                 R.layout.chat_incoming,
-                ChatViewHolder.class,
+                RecyclerView.ViewHolder.class,
                 reference
         ) {
-            private int VIEWTYPE_INCOMING = 100;
-            private int VIEWTYPE_OUTGOING = 200;
-            @Override
-            protected void populateViewHolder(ChatViewHolder viewHolder, PbMessage model, int position) {
-                viewHolder.setChatBody(model.getBody());
+            private static final int VIEWTYPE_INCOMING = 100;
+            private static final int VIEWTYPE_OUTGOING = 200;
 
-            }
 
             @Override
-            public PbMessage getItem(int position) {
-                return super.getItem(position);
+            protected void populateViewHolder(RecyclerView.ViewHolder viewHolder, PbMessage model,
+                                              int position) {
+
+                ((ChatViewHolder) viewHolder).setChatBody(model.getBody());
+
             }
 
             @Override
             public int getItemViewType(int position) {
                 PbMessage message = getItem(position);
-                Log.d("CHATFRAGMENT", message.getBody());
-                int sentByMe;
-                if (message.getIsSentByMe()) {
-                    sentByMe = 1;
+                if (message.getType().equals("sent")) {
+                    return VIEWTYPE_OUTGOING;
                 } else {
-                    sentByMe = 0;
+                    return VIEWTYPE_INCOMING;
                 }
-                switch (sentByMe) {
-                    case 1:
-                        return VIEWTYPE_OUTGOING;
-                    case 0:
-                        return VIEWTYPE_INCOMING;
-                }
-                return super.getItemViewType(position);
             }
 
             @Override
-            public ChatViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                if (viewType == VIEWTYPE_INCOMING) {
-                    View incoming = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.chat_incoming, parent, false);
-                    return new ChatViewHolder(incoming);
-                } else {
-                    View outgoing = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.chat_outgoing, parent, false);
-                    return new ChatViewHolder(outgoing);
+            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                switch (viewType) {
+                    case VIEWTYPE_OUTGOING:
+                        View outgoing = LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.chat_outgoing, parent, false);
+                        return new ChatViewHolder(outgoing);
+                    case VIEWTYPE_INCOMING:
+                        View incoming = LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.chat_incoming, parent, false);
+                        return new ChatViewHolder(incoming);
+                    default:
+                        return super.onCreateViewHolder(parent, viewType);
                 }
             }
         };

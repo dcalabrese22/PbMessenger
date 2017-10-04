@@ -6,59 +6,65 @@ package com.dcalabrese22.dan.pbmessenger.Objects;
 
 public class PbMessage {
 
-    private String mMessageId;
-    private String mBody;
-    private String mDate;
-    private String mSender;
-    private Boolean mIsSentByMe;
+    private String messageId;
+    private String body;
+    private String date;
+    private String sender;
+    private String type;
 
     public PbMessage() {}
 
-    public PbMessage(String id, String body, String date, String sender, Boolean isSentByMe) {
-        mMessageId = id;
-        mBody = body;
-        mDate = date;
-        mSender = sender;
-        mIsSentByMe = isSentByMe;
+    public PbMessage(String id, String body, String date, String sender, String type) {
+        messageId = id;
+        this.body = body;
+        this.date = date;
+        this.sender = sender;
+        this.type = type;
     }
 
     public String getMessageId() {
-        return mMessageId;
+        return messageId;
     }
 
     public String getBody() {
-        return mBody;
+        return body;
     }
 
     public String getDate() {
-        return mDate;
+        return date;
     }
 
     public String getSender() {
-        return mSender;
+        return sender;
     }
 
-    public Boolean getIsSentByMe() { return  mIsSentByMe; }
-
-    public void setIsSentByMe(Boolean isSentByMe) {
-        mIsSentByMe = isSentByMe;
+    public String getType() {
+        return type;
     }
 
     public void setMessageId(String messageId) {
-        mMessageId = messageId;
+        this.messageId = messageId;
     }
 
     public void setBody(String body) {
-        mBody = body;
+        this.body = body;
     }
 
     public void setDate(String date) {
-        mDate = date;
+        this.date = date;
     }
 
     public void setSender(String sender) {
-        mSender = sender;
+        this.sender = sender;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return body;
+    }
 }
 
