@@ -57,7 +57,7 @@ public class ChatFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_chat, container, false);
@@ -126,7 +126,7 @@ public class ChatFragment extends Fragment {
                             Log.d("User name: ", name);
                             Date now = Calendar.getInstance().getTime();
                             Log.d("Now: ", now.toString());
-                            PbMessage newMessage = new PbMessage(nextKey, body, now.toString(), name);
+                            PbMessage newMessage = new PbMessage(nextKey, body, now.toString(), name, true);
                             Map<String, Object> m = new HashMap<>();
                             m.put(nextKey, newMessage);
                             messagRef.updateChildren(m);
@@ -160,6 +160,8 @@ public class ChatFragment extends Fragment {
                 ChatViewHolder.class,
                 reference
         ) {
+            private int VIEWTYPE_INCOMING = 100;
+            private int VIEWTYPE_OUTGOING = 200;
             @Override
             protected void populateViewHolder(ChatViewHolder viewHolder, PbMessage model, int position) {
                 viewHolder.setChatBody(model.getBody());
@@ -167,13 +169,40 @@ public class ChatFragment extends Fragment {
             }
 
             @Override
+            public PbMessage getItem(int position) {
+                return super.getItem(position);
+            }
+
+            @Override
             public int getItemViewType(int position) {
+                PbMessage message = getItem(position);
+                Log.d("CHATFRAGMENT", message.getBody());
+                int sentByMe;
+                if (message.getIsSentByMe()) {
+                    sentByMe = 1;
+                } else {
+                    sentByMe = 0;
+                }
+                switch (sentByMe) {
+                    case 1:
+                        return VIEWTYPE_OUTGOING;
+                    case 0:
+                        return VIEWTYPE_INCOMING;
+                }
                 return super.getItemViewType(position);
             }
 
             @Override
             public ChatViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                return super.onCreateViewHolder(parent, viewType);
+                if (viewType == VIEWTYPE_INCOMING) {
+                    View incoming = LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.chat_incoming, parent, false);
+                    return new ChatViewHolder(incoming);
+                } else {
+                    View outgoing = LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.chat_outgoing, parent, false);
+                    return new ChatViewHolder(outgoing);
+                }
             }
         };
 

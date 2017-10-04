@@ -6,34 +6,59 @@ package com.dcalabrese22.dan.pbmessenger.Objects;
 
 public class PbMessage {
 
-    private String messageId;
-    private String body;
-    private String date;
-    private String sender;
+    private String mMessageId;
+    private String mBody;
+    private String mDate;
+    private String mSender;
+    private Boolean mIsSentByMe;
 
     public PbMessage() {}
 
-    public PbMessage(String id, String body, String date, String sender) {
-        messageId = id;
-        this.body = body;
-        this.date = date;
-        this.sender = sender;
+    public PbMessage(String id, String body, String date, String sender, Boolean isSentByMe) {
+        mMessageId = id;
+        mBody = body;
+        mDate = date;
+        mSender = sender;
+        mIsSentByMe = isSentByMe;
     }
 
     public String getMessageId() {
-        return messageId;
+        return mMessageId;
     }
 
     public String getBody() {
-        return body;
+        return mBody;
     }
 
     public String getDate() {
-        return date;
+        return mDate;
     }
 
     public String getSender() {
-        return sender;
+        return mSender;
     }
+
+    public Boolean getIsSentByMe() { return  mIsSentByMe; }
+
+    public void setIsSentByMe(Boolean isSentByMe) {
+        mIsSentByMe = isSentByMe;
+    }
+
+    public void setMessageId(String messageId) {
+        mMessageId = messageId;
+    }
+
+    public void setBody(String body) {
+        mBody = body;
+    }
+
+    public void setDate(String date) {
+        mDate = date;
+    }
+
+    public void setSender(String sender) {
+        mSender = sender;
+    }
+
 }
 
