@@ -1,6 +1,7 @@
 package com.dcalabrese22.dan.pbmessenger.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import android.support.design.widget.FloatingActionButton;
@@ -51,7 +52,7 @@ public class MessagesListFragment extends Fragment {
 
         final ProgressBar progressBar = (ProgressBar) rootView.findViewById(R.id.progress_loading_messages);
         progressBar.setVisibility(View.VISIBLE);
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.message_list_fab);
+        final FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.message_list_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +79,7 @@ public class MessagesListFragment extends Fragment {
 
         recyclerView.setLayoutManager(ll);
 
+        final int selectedPosition = 0;
         mAdapter = new FirebaseRecyclerAdapter<PbConversation, ConversationViewHolder>(
                 PbConversation.class,
                 R.layout.conversation,
@@ -95,10 +97,10 @@ public class MessagesListFragment extends Fragment {
             @Override
             public ConversationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 ConversationViewHolder viewHolder = super.onCreateViewHolder(parent, viewType);
+                viewHolder.setMembers(fab, getContext(), selectedPosition);
                 viewHolder.setOnClickListener(new ConversationClickListener() {
                     @Override
                     public void onConversationClick(View view, int position) {
-
                         PbConversation model = getItem(position);
                         String id = model.getId();
                         String user = model.getUser();
@@ -113,6 +115,13 @@ public class MessagesListFragment extends Fragment {
             }
 
             @Override
+            public void onBindViewHolder(ConversationViewHolder viewHolder, int position) {
+                viewHolder.itemView.setBackgroundColor(selectedPosition == position ?
+                        Color.GREEN : Color.TRANSPARENT);
+
+            }
+
+            @Override
             public void onDataChanged() {
                 super.onDataChanged();
                 progressBar.setVisibility(View.INVISIBLE);
@@ -120,7 +129,7 @@ public class MessagesListFragment extends Fragment {
         };
 
         recyclerView.setAdapter(mAdapter);
-        
+
 
         return rootView;
     }

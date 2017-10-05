@@ -1,33 +1,45 @@
 package com.dcalabrese22.dan.pbmessenger;
 
 import android.content.Context;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dcalabrese22.dan.pbmessenger.interfaces.ConversationClickListener;
 import com.squareup.picasso.Picasso;
 
-import junit.framework.Test;
-
 /**
  * Created by dan on 9/13/17.
  */
 
-public class ConversationViewHolder extends RecyclerView.ViewHolder {
+public class ConversationViewHolder extends RecyclerView.ViewHolder{
 
 
-    TextView mSubject;
-    TextView mUser;
-    TextView mLastMessage;
-    ImageView mAvatar;
+    private TextView mSubject;
+    private TextView mUser;
+    private TextView mLastMessage;
+    private ImageView mAvatar;
 
-    ConversationClickListener mClickListener;
+    private ConversationClickListener mClickListener;
+    private FloatingActionButton mFab;
+    private Context mContext;
+    private int mSelectedPosition;
 
     public void setOnClickListener(ConversationClickListener listener) {
         mClickListener = listener;
+
     }
+
+    public void setMembers(FloatingActionButton fab, Context context, int position) {
+        mFab = fab;
+        mContext = context;
+        mSelectedPosition = position;
+    }
+
+
 
     public ConversationViewHolder(View view) {
         super(view);
@@ -39,6 +51,16 @@ public class ConversationViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 mClickListener.onConversationClick(v, getAdapterPosition());
+            }
+        });
+
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+//                v.findViewById(R.id.conversation_top).setSelected(true);
+                mFab.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.rotate));
+                mFab.setImageResource(R.drawable.ic_delete_white_24px);
+                return true;
             }
         });
 

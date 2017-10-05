@@ -6,7 +6,6 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -16,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.dcalabrese22.dan.pbmessenger.ChatViewHolder;
 import com.dcalabrese22.dan.pbmessenger.MainActivity;
@@ -64,7 +62,7 @@ public class ChatFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_chat, container, false);
         final FloatingActionButton mButtonSend = (FloatingActionButton) rootView.findViewById(R.id.button_send);
         mButtonSend.setBackgroundTintList(ColorStateList.valueOf(
-                getResources().getColor(R.color.fabDiabled, null)
+                getResources().getColor(R.color.fabDisabled, null)
         ));
         mButtonSend.setEnabled(false);
 
@@ -88,7 +86,7 @@ public class ChatFragment extends Fragment {
                     mButtonSend.setEnabled(true);
                 } else {
                     mButtonSend.setBackgroundTintList(ColorStateList.valueOf(
-                            getResources().getColor(R.color.fabDiabled, null)
+                            getResources().getColor(R.color.fabDisabled, null)
                     ));
                     mButtonSend.setEnabled(false);
                 }
@@ -109,11 +107,14 @@ public class ChatFragment extends Fragment {
         mButtonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Toast.makeText(getContext(), "Fab Pressed", Toast.LENGTH_SHORT).show();
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("conversations");
                 final DatabaseReference messagRef = reference.child("messages").child(mMessageId);
                 Query lastIdQuery = messagRef.orderByKey().limitToLast(1);
+                DatabaseReference conversationRef = reference.child(FirebaseAuth
+                        .getInstance().getCurrentUser().getUid()).child(mMessageId);
+                Map<String, Object> map = new HashMap<>();
+                map.put("lastMessage", reply.getText().toString());
+                conversationRef.updateChildren(map);
                 ValueEventListener valueEventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

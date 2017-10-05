@@ -23,5 +23,4 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
     public void setChatBody(String body) {
         mChatBody.setText(body);
     }
-
 }
