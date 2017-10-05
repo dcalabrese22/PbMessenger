@@ -19,4 +19,12 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:id="@+id/message_list_fab"/>
 
+    <ProgressBar
+        android:id="@+id/progress_loading_messages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:visibility="invisible"/>
+
 </FrameLayout>

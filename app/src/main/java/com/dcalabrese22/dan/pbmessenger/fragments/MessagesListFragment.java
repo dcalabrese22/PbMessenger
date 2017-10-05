@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.dcalabrese22.dan.pbmessenger.ConversationViewHolder;
 import com.dcalabrese22.dan.pbmessenger.Objects.PbConversation;
@@ -48,6 +49,8 @@ public class MessagesListFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_messages_list, container, false);
 
+        final ProgressBar progressBar = (ProgressBar) rootView.findViewById(R.id.progress_loading_messages);
+        progressBar.setVisibility(View.VISIBLE);
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.message_list_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +65,6 @@ public class MessagesListFragment extends Fragment {
         });
 
         final Context context = getContext();
-
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         mUserId = user.getUid();
@@ -109,10 +111,16 @@ public class MessagesListFragment extends Fragment {
 
                 return viewHolder;
             }
+
+            @Override
+            public void onDataChanged() {
+                super.onDataChanged();
+                progressBar.setVisibility(View.INVISIBLE);
+            }
         };
 
         recyclerView.setAdapter(mAdapter);
-
+        
 
         return rootView;
     }
