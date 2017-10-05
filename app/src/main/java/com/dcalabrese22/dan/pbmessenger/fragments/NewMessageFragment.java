@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.dcalabrese22.dan.pbmessenger.Objects.PbConversation;
+import com.dcalabrese22.dan.pbmessenger.Objects.PbMessage;
 import com.dcalabrese22.dan.pbmessenger.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,7 +26,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class NewMessageFragment extends Fragment {
@@ -39,7 +44,7 @@ public class NewMessageFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_new_message, container, false);
@@ -49,10 +54,10 @@ public class NewMessageFragment extends Fragment {
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_new_message);
 
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("conversations");
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("conversations");
 
-        DatabaseReference uidReference = reference.child(userId);
-        DatabaseReference messages = reference.child("messages");
+        final DatabaseReference uidReference = reference.child(userId);
+        final DatabaseReference messagesRef = reference.child("messages");
 
         fab.setOnClickListener(new View.OnClickListener() {
 
@@ -62,14 +67,28 @@ public class NewMessageFragment extends Fragment {
                         || body.getText().toString().equals("")) {
                     Toast.makeText(getContext(), R.string.missing_fields, Toast.LENGTH_SHORT).show();
                 } else {
+                    String key = uidReference.push().getKey();
 
+                    PbConversation conversation = new PbConversation(key, subject.getText().toString(),
+                            mName.getText().toString(), body.getText().toString(), "null");
+
+                    uidReference.child(key).setValue(conversation);
+                    Date now = Calendar.getInstance().getTime();
+                    PbMessage message = new PbMessage("0",
+                            body.getText().toString(),
+                            now.toString(),
+                            FirebaseAuth.getInstance().getCurrentUser().getEmail().split("@")[0],
+                            "sent");
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("0", message);
+                    messagesRef.child(key).updateChildren(map);
+                    getActivity().getSupportFragmentManager().popBackStack();
                 }
             }
         });
 
         final List<String> autoCompleteNames = new ArrayList<>();
 
-        reference = FirebaseDatabase.getInstance().getReference("conversations");
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         
         Query userNameQuery = reference.child(userId);
@@ -92,7 +111,6 @@ public class NewMessageFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_dropdown_item_1line, autoCompleteNames);
         mName.setAdapter(adapter);
-
 
 
 

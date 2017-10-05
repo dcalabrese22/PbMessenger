@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -150,9 +151,10 @@ public class ChatFragment extends Fragment {
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_chat);
         LinearLayoutManager ll = new LinearLayoutManager(getActivity());
-
+        ll.setStackFromEnd(true);
 
         recyclerView.setLayoutManager(ll);
+
 
         mAdapter = new FirebaseRecyclerAdapter<PbMessage, RecyclerView.ViewHolder>(
                 PbMessage.class,
@@ -200,6 +202,7 @@ public class ChatFragment extends Fragment {
         };
 
         recyclerView.setAdapter(mAdapter);
+
         return rootView;
     }
 

@@ -46,6 +46,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
 
     private static final String TAG = "LoginActivity";
+    private static final String SAVED_EMAIL = "saved_email";
+    private static final String SAVE_PASSWORD = "saved_password";
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private AutoCompleteTextView mEmail;
@@ -59,6 +61,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -67,6 +71,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         mPassword = (EditText) findViewById(R.id.password);
         mContext = this;
         mProgressbar = (ProgressBar) findViewById(R.id.login_progress);
+
+        if (savedInstanceState != null) {
+            mEmail.setText(savedInstanceState.getString(SAVED_EMAIL));
+            mPassword.setText(savedInstanceState.getString(SAVE_PASSWORD));
+        }
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -221,8 +230,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         if (!mayRequestContacts()) {
             return;
         }
-
         getLoaderManager().initLoader(0, null, this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        String enteredEmail = mEmail.getText().toString();
+        String enteredPass = mPassword.getText().toString();
+        outState.putString(SAVED_EMAIL, enteredEmail);
+        outState.putString(SAVE_PASSWORD, enteredPass);
     }
 }
 

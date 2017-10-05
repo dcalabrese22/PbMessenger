@@ -58,7 +58,9 @@ public class ConversationViewHolder extends RecyclerView.ViewHolder {
 
     public void setAvatar(String urlToImage, Context context) {
 
-        Picasso.with(context).load(urlToImage).into(mAvatar);
+        if (urlToImage != null || !urlToImage.equals("")) {
+            Picasso.with(context).load(urlToImage).into(mAvatar);
+        }
 
     }
 }

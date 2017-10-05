@@ -41,6 +41,7 @@
                     android:background="@null"
                     android:hint="hint"
                     android:maxLines="3"
+                    android:padding="10dp"
                     android:layout_weight="1"
                     android:textCursorDrawable="@null" />
 
@@ -63,6 +64,7 @@
     </ScrollView>
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nested_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/chat_scrollview"
