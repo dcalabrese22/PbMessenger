@@ -5,6 +5,7 @@
     <color name="colorAccent">#448AFF</color>
     <color name="incoming_bubble">#f2f2f2</color>
     <color name="outgoing_bubble">#dddddd</color>
+    <color name="selected_background">#f2f2f2</color>
     <color name="background">#e5e5e5</color>
     <color name="fabDisabled">#BDBDBD</color>
 </resources>

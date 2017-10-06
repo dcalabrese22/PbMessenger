@@ -114,12 +114,6 @@ public class MessagesListFragment extends Fragment {
                 return viewHolder;
             }
 
-            @Override
-            public void onBindViewHolder(ConversationViewHolder viewHolder, int position) {
-                viewHolder.itemView.setBackgroundColor(selectedPosition == position ?
-                        Color.GREEN : Color.TRANSPARENT);
-
-            }
 
             @Override
             public void onDataChanged() {
