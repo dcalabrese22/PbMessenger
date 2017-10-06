@@ -28,6 +28,7 @@
     <string name="logout">Logout</string>
     <string name="avatar_showing">avatar</string>
     <string name="checked">checked</string>
+    <string name="menu_item_delete">Delete</string>
 
 
 </resources>
