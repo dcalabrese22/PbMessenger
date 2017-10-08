@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,26 +19,31 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.dcalabrese22.dan.pbmessenger.ConversationViewHolder;
+import com.dcalabrese22.dan.pbmessenger.MultiSelectFirebaseRecyclerAdapter;
 import com.dcalabrese22.dan.pbmessenger.Objects.PbConversation;
 import com.dcalabrese22.dan.pbmessenger.R;
 import com.dcalabrese22.dan.pbmessenger.helpers.RecyclerItemClickListener;
-import com.dcalabrese22.dan.pbmessenger.interfaces.ConversationClickListener;
 import com.dcalabrese22.dan.pbmessenger.interfaces.MessageExtrasListener;
 import com.dcalabrese22.dan.pbmessenger.interfaces.OnRecyclerItemClickListener;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 
 public class MessagesListFragment extends Fragment {
 
     private String mUserId;
-    private FirebaseRecyclerAdapter<PbConversation, ConversationViewHolder> mAdapter;
+    private MultiSelectFirebaseRecyclerAdapter mAdapter;
     private MessageExtrasListener mListener;
     private boolean mIsMultiSelectMode = false;
     private RecyclerView mRecyclerView;
+    private ActionMode mActionMode;
+    private ArrayList<PbConversation> mSelectedConversations = new ArrayList<>();
+    private HashMap<Integer, ConversationViewHolder> mViewHolders = new HashMap<>();
 
     public MessagesListFragment() {
         // Required empty public constructor
@@ -57,7 +62,7 @@ public class MessagesListFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_messages_list, container, false);
 
-        final ProgressBar progressBar = (ProgressBar) rootView.findViewById(R.id.progress_loading_messages);
+        ProgressBar progressBar = (ProgressBar) rootView.findViewById(R.id.progress_loading_messages);
         progressBar.setVisibility(View.VISIBLE);
         final FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.message_list_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -82,69 +87,50 @@ public class MessagesListFragment extends Fragment {
                 .child(mUserId);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_conversations);
+        mAdapter = new MultiSelectFirebaseRecyclerAdapter(context, PbConversation.class,
+                R.layout.conversation, ConversationViewHolder.class,
+                reference, mListener, progressBar, mSelectedConversations);
+
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), mRecyclerView,
                 new OnRecyclerItemClickListener() {
+
                     @Override
                     public void onItemClick(View view, int position) {
-
+                        if (mIsMultiSelectMode) {
+                            multiSelect(view, position);
+                            Log.d("MessageListFrag onClick", String.valueOf(mIsMultiSelectMode));
+                        } else {
+                            PbConversation itemClicked = mAdapter.getItem(position);
+                            String id = itemClicked.getId();
+                            String user = itemClicked.getUser();
+                            mListener.getMessageUser(user);
+                            mListener.sendMessageId(id);
+                        }
                     }
 
                     @Override
                     public void OnItemLongClick(View view, int position) {
+                        Log.d("MessageListFrag onLong", String.valueOf(mIsMultiSelectMode));
+
+                        if (!mIsMultiSelectMode) {
+                            mIsMultiSelectMode = true;
+
+                            if (mActionMode == null) {
+                                mActionMode = getActivity().startActionMode(mActionModeCallBack);
+                            }
+                        }
 
                     }
                 }));
         LinearLayoutManager ll = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(ll);
 
-        final int selectedPosition = 0;
-        mAdapter = new FirebaseRecyclerAdapter<PbConversation, ConversationViewHolder>(
-                PbConversation.class,
-                R.layout.conversation,
-                ConversationViewHolder.class,
-                reference
-        ) {
-            @Override
-            protected void populateViewHolder(ConversationViewHolder viewHolder, PbConversation model, int position) {
-                viewHolder.setSubject(model.getTitle());
-                viewHolder.setUser(model.getUser());
-                viewHolder.setLastMessage(model.getLastMessage());
-                viewHolder.setAvatar(model.getUserImage(), context);
-            }
-
-            @Override
-            public ConversationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                ConversationViewHolder viewHolder = super.onCreateViewHolder(parent, viewType);
-                viewHolder.setMembers(fab, getContext(), selectedPosition);
-                viewHolder.setOnClickListener(new ConversationClickListener() {
-                    @Override
-                    public void onConversationClick(View view, int position) {
-                        PbConversation model = getItem(position);
-                        String id = model.getId();
-                        String user = model.getUser();
-                        Log.d("MESSAGE ID: ", id);
-                        mListener.getMessageUser(user);
-                        mListener.sendMessageId(id);
-
-                    }
-                });
-
-                return viewHolder;
-            }
-
-
-            @Override
-            public void onDataChanged() {
-                super.onDataChanged();
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-        };
-
         mRecyclerView.setAdapter(mAdapter);
 
 
         return rootView;
     }
+
 
     @Override
     public void onDestroy() {
@@ -180,8 +166,40 @@ public class MessagesListFragment extends Fragment {
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+            mIsMultiSelectMode = false;
+            mSelectedConversations = new ArrayList<>();
 
         }
     };
+
+    public void multiSelect(View view, int position) {
+        ConversationViewHolder viewHolder = (ConversationViewHolder) mRecyclerView
+                .getChildViewHolder(view);
+        if (mActionMode != null) {
+            PbConversation selected = mAdapter.getItem(position);
+            if (mSelectedConversations.contains(selected)) {
+                mSelectedConversations.remove(selected);
+                mViewHolders.remove(position);
+                viewHolder.flipAvatar(view);
+                view.setActivated(false);
+                Log.d("Removed", mSelectedConversations.toString());
+            } else {
+                mSelectedConversations.add(selected);
+                mViewHolders.put(position, viewHolder);
+                viewHolder.flipAvatar(view);
+                view.setActivated(true);
+                Log.d("Added", mSelectedConversations.toString());
+            }
+            mActionMode.setTitle("" + mSelectedConversations.size());
+        }
+    }
+
+    public void unCheckedSelected() {
+        for (ConversationViewHolder holder : mViewHolders.values()) {
+            
+        }
+    }
+
 
 }

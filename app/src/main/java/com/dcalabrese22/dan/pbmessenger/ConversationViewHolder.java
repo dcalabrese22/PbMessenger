@@ -3,11 +3,10 @@ package com.dcalabrese22.dan.pbmessenger;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,24 +26,7 @@ public class ConversationViewHolder extends RecyclerView.ViewHolder {
     private TextView mUser;
     private TextView mLastMessage;
     private ImageView mAvatar;
-
-    private ConversationClickListener mClickListener;
-    private FloatingActionButton mFab;
-    private Context mContext;
-    private int mSelectedPosition;
-    private boolean mMultiSelectMode = false;
-
-    public void setOnClickListener(ConversationClickListener listener) {
-        mClickListener = listener;
-
-    }
-
-    public void setMembers(FloatingActionButton fab, Context context, int position) {
-        mFab = fab;
-        mContext = context;
-        mSelectedPosition = position;
-    }
-
+    LinearLayout mLinearLayout;
 
     public ConversationViewHolder(View view) {
         super(view);
@@ -52,103 +34,98 @@ public class ConversationViewHolder extends RecyclerView.ViewHolder {
         mSubject = (TextView) view.findViewById(R.id.tv_conversation_subject);
         mUser = (TextView) view.findViewById(R.id.tv_conversation_user);
         mLastMessage = (TextView) view.findViewById(R.id.tv_conversation_last_message);
-        view.setOnClickListener(new View.OnClickListener() {
+        mLinearLayout = (LinearLayout) view.findViewById(R.id.conversation_top);
+
+//        view.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+////                flipAvatar(v);
+//                return true;
+//            }
+//
+//        });
+
+    }
+
+    public void flipAvatar(View v) {
+        RelativeLayout container = (RelativeLayout) v.findViewById(R.id.image_container);
+        Object o = container.getTag();
+        boolean isActivated = !o.equals("checked");
+        v.setActivated(isActivated);
+
+        final boolean isChecked = !o.equals("checked");
+        if (isChecked) {
+            container.setTag("checked");
+        } else {
+            container.setTag("unchecked");
+        }
+
+        v.findViewById(R.id.conversation_top).setSelected(true);
+        final CircleImageView avatar = (CircleImageView) v.findViewById(R.id.user_avatar);
+
+        final CircleImageView check = (CircleImageView) v.findViewById(R.id.user_message_checked);
+        ObjectAnimator flipAvatarForwards = ObjectAnimator.ofFloat(avatar, "rotationY", 0f, 90f);
+        final ObjectAnimator flipAvatarBack = ObjectAnimator.ofFloat(avatar, "rotationY", 90f, 0f);
+        final ObjectAnimator flipCheckForwards = ObjectAnimator.ofFloat(check, "rotationY", 90f, 180f);
+        final ObjectAnimator flipCheckBackwards = ObjectAnimator.ofFloat(check, "rotationY", 180f, 90f);
+        flipCheckForwards.setDuration(150);
+        flipAvatarBack.setDuration(150);
+        flipAvatarForwards.setDuration(150);
+        flipCheckBackwards.setDuration(150);
+
+        flipAvatarForwards.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onClick(View v) {
-                mClickListener.onConversationClick(v, getAdapterPosition());
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                flipCheckForwards.start();
+                check.setVisibility(View.VISIBLE);
+                avatar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
             }
         });
-        view.setOnLongClickListener(new View.OnLongClickListener() {
+
+        flipCheckBackwards.addListener(new Animator.AnimatorListener() {
             @Override
-            public boolean onLongClick(View v) {
-                RelativeLayout container = (RelativeLayout) v.findViewById(R.id.image_container);
-                Object o = container.getTag();
-                boolean isActivated = !o.equals("checked");
-                v.setActivated(isActivated);
-                Log.d("ConversationViewHolder", container.getTag().toString());
+            public void onAnimationStart(Animator animation) {
 
-                final boolean isChecked = !o.equals("checked");
-                if (isChecked) {
-                    container.setTag("checked");
-                } else {
-                    container.setTag("unchecked");
-                }
-                Log.d("ConversationViewHolder", container.getTag().toString());
-                Log.d("isChecked", String.valueOf(isChecked));
+            }
 
-                v.findViewById(R.id.conversation_top).setSelected(true);
-                final CircleImageView avatar = (CircleImageView) v.findViewById(R.id.user_avatar);
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                flipAvatarBack.start();
+                check.setVisibility(View.GONE);
+                avatar.setVisibility(View.VISIBLE);
+            }
 
-                final CircleImageView check = (CircleImageView) v.findViewById(R.id.user_message_checked);
-                ObjectAnimator flipAvatarForwards = ObjectAnimator.ofFloat(avatar, "rotationY", 0f, 90f);
-                final ObjectAnimator flipAvatarBack = ObjectAnimator.ofFloat(avatar, "rotationY", 90f, 0f);
-                final ObjectAnimator flipCheckForwards = ObjectAnimator.ofFloat(check, "rotationY", 90f, 180f);
-                final ObjectAnimator flipCheckBackwards = ObjectAnimator.ofFloat(check, "rotationY", 180f, 90f);
-                flipCheckForwards.setDuration(150);
-                flipAvatarBack.setDuration(150);
-                flipAvatarForwards.setDuration(150);
-                flipCheckBackwards.setDuration(150);
+            @Override
+            public void onAnimationCancel(Animator animation) {
 
-                flipAvatarForwards.addListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
+            }
 
-                    }
+            @Override
+            public void onAnimationRepeat(Animator animation) {
 
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        Log.d("AndimaationEnd", String.valueOf(isChecked));
-
-                        flipCheckForwards.start();
-                        check.setVisibility(View.VISIBLE);
-                        avatar.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-
-                    }
-                });
-
-                flipCheckBackwards.addListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        flipAvatarBack.start();
-                        check.setVisibility(View.GONE);
-                        avatar.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-
-                    }
-                });
-
-                if (isChecked) {
-                    flipAvatarForwards.start();
-                } else {
-                    flipCheckBackwards.start();
-                }
-
-
-                return true;
             }
         });
+
+        if (isChecked) {
+            flipAvatarForwards.start();
+        } else {
+            flipCheckBackwards.start();
+        }
 
     }
 
@@ -169,6 +146,5 @@ public class ConversationViewHolder extends RecyclerView.ViewHolder {
         if (urlToImage != null || !urlToImage.equals("")) {
             Picasso.with(context).load(urlToImage).into(mAvatar);
         }
-
     }
 }
