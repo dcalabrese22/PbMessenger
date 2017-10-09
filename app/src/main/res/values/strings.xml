@@ -29,6 +29,8 @@
     <string name="avatar_showing">avatar</string>
     <string name="checked">checked</string>
     <string name="menu_item_delete">Delete</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 
 
 </resources>
