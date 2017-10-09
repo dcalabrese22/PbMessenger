@@ -1,15 +1,11 @@
 package com.dcalabrese22.dan.pbmessenger;
 
 import android.content.Context;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.dcalabrese22.dan.pbmessenger.Objects.PbConversation;
-import com.dcalabrese22.dan.pbmessenger.interfaces.ConversationClickListener;
+import com.dcalabrese22.dan.pbmessenger.Objects.SelectedConversation;
 import com.dcalabrese22.dan.pbmessenger.interfaces.MessageExtrasListener;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
@@ -25,12 +21,12 @@ public class MultiSelectFirebaseRecyclerAdapter extends FirebaseRecyclerAdapter<
     private Context mContext;
     private MessageExtrasListener mListener;
     private ProgressBar mBar;
-    private ArrayList<PbConversation> mSelectedConversations;
+    private ArrayList<SelectedConversation> mSelectedConversations;
 
     public MultiSelectFirebaseRecyclerAdapter(Context context, Class model, int layout,
                                               Class viewHolder, DatabaseReference reference,
                                               MessageExtrasListener listener, ProgressBar bar,
-                                              ArrayList<PbConversation> selected) {
+                                              ArrayList<SelectedConversation> selected) {
         super(model, layout, viewHolder, reference);
         mContext = context;
         mListener = listener;
@@ -38,7 +34,7 @@ public class MultiSelectFirebaseRecyclerAdapter extends FirebaseRecyclerAdapter<
         mSelectedConversations = selected;
     }
 
-    public void setSelectedConversations(ArrayList<PbConversation> selected) {
+    public void setSelectedConversations(ArrayList<SelectedConversation> selected) {
         mSelectedConversations = selected;
     }
 

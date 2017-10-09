@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.dcalabrese22.dan.pbmessenger.ConversationViewHolder;
 import com.dcalabrese22.dan.pbmessenger.MultiSelectFirebaseRecyclerAdapter;
 import com.dcalabrese22.dan.pbmessenger.Objects.PbConversation;
+import com.dcalabrese22.dan.pbmessenger.Objects.SelectedConversation;
 import com.dcalabrese22.dan.pbmessenger.R;
 import com.dcalabrese22.dan.pbmessenger.helpers.RecyclerItemClickListener;
 import com.dcalabrese22.dan.pbmessenger.interfaces.MessageExtrasListener;
@@ -31,7 +32,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Iterator;
 
 
 public class MessagesListFragment extends Fragment {
@@ -42,8 +43,8 @@ public class MessagesListFragment extends Fragment {
     private boolean mIsMultiSelectMode = false;
     private RecyclerView mRecyclerView;
     private ActionMode mActionMode;
-    private ArrayList<PbConversation> mSelectedConversations = new ArrayList<>();
-    private HashMap<Integer, ConversationViewHolder> mViewHolders = new HashMap<>();
+    private ArrayList<SelectedConversation> mSelectedConversations = new ArrayList<>();
+    private ArrayList<PbConversation> mSelectedPbConversations = new ArrayList<>();
 
     public MessagesListFragment() {
         // Required empty public constructor
@@ -86,6 +87,7 @@ public class MessagesListFragment extends Fragment {
                 .child("conversations")
                 .child(mUserId);
 
+
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_conversations);
         mAdapter = new MultiSelectFirebaseRecyclerAdapter(context, PbConversation.class,
                 R.layout.conversation, ConversationViewHolder.class,
@@ -119,6 +121,7 @@ public class MessagesListFragment extends Fragment {
                                 mActionMode = getActivity().startActionMode(mActionModeCallBack);
                             }
                         }
+                        multiSelect(view, position);
 
                     }
                 }));
@@ -158,6 +161,20 @@ public class MessagesListFragment extends Fragment {
             switch (item.getItemId()) {
                 case R.id.action_delete:
                     Toast.makeText(getContext(), "Removed", Toast.LENGTH_SHORT).show();
+                    for (SelectedConversation selectedConversation : mSelectedConversations) {
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
+                                .child("conversations")
+                                .child(mUserId);
+
+                        DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference()
+                                .child("conversations")
+                                .child("messages");
+                        String id = selectedConversation.getConversation().getId();
+                        reference.child(id).removeValue();
+                        messageRef.child(id).removeValue();
+                    }
+                    mSelectedConversations.clear();
+                    mActionMode.setTitle("" + mSelectedConversations.size());
                     return true;
                 default:
                     return false;
@@ -168,6 +185,7 @@ public class MessagesListFragment extends Fragment {
         public void onDestroyActionMode(ActionMode mode) {
             mActionMode = null;
             mIsMultiSelectMode = false;
+            deselectAll();
             mSelectedConversations = new ArrayList<>();
 
         }
@@ -176,28 +194,35 @@ public class MessagesListFragment extends Fragment {
     public void multiSelect(View view, int position) {
         ConversationViewHolder viewHolder = (ConversationViewHolder) mRecyclerView
                 .getChildViewHolder(view);
+        PbConversation selected = mAdapter.getItem(position);
+        SelectedConversation selectedConversation = new SelectedConversation(view, viewHolder,
+                position, selected);
         if (mActionMode != null) {
-            PbConversation selected = mAdapter.getItem(position);
-            if (mSelectedConversations.contains(selected)) {
-                mSelectedConversations.remove(selected);
-                mViewHolders.remove(position);
+            if (mSelectedPbConversations.contains(selected)) {
                 viewHolder.flipAvatar(view);
                 view.setActivated(false);
-                Log.d("Removed", mSelectedConversations.toString());
+                mSelectedPbConversations.remove(selected);
+                for (Iterator<SelectedConversation> i = mSelectedConversations.listIterator(); i.hasNext();) {
+                    PbConversation c = i.next().getConversation();
+                    if (c.equals(selected)) {
+                        i.remove();
+                    }
+                }
             } else {
-                mSelectedConversations.add(selected);
-                mViewHolders.put(position, viewHolder);
+                mSelectedPbConversations.add(selected);
+                mSelectedConversations.add(selectedConversation);
                 viewHolder.flipAvatar(view);
                 view.setActivated(true);
-                Log.d("Added", mSelectedConversations.toString());
             }
             mActionMode.setTitle("" + mSelectedConversations.size());
         }
     }
 
-    public void unCheckedSelected() {
-        for (ConversationViewHolder holder : mViewHolders.values()) {
-            
+
+    public void deselectAll() {
+        for (SelectedConversation selected : mSelectedConversations) {
+            selected.getViewHolder().flipAvatar(selected.getSelectedView());
+            selected.getSelectedView().setActivated(false);
         }
     }
 
