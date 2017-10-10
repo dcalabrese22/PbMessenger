@@ -34,10 +34,6 @@ public class MultiSelectFirebaseRecyclerAdapter extends FirebaseRecyclerAdapter<
         mSelectedConversations = selected;
     }
 
-    public void setSelectedConversations(ArrayList<SelectedConversation> selected) {
-        mSelectedConversations = selected;
-    }
-
     @Override
     protected void populateViewHolder(ConversationViewHolder viewHolder, PbConversation model, int position) {
         viewHolder.setSubject(model.getTitle());

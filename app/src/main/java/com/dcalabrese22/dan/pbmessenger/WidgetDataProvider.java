@@ -2,13 +2,13 @@ package com.dcalabrese22.dan.pbmessenger;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.dcalabrese22.dan.pbmessenger.Objects.PbConversation;
-import com.dcalabrese22.dan.pbmessenger.helpers.PbAvatarGetter;
+import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -16,8 +16,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by dan on 10/9/17.
@@ -25,9 +25,10 @@ import java.util.ListIterator;
 
 public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory {
 
-    private Context mContext;
+    private Context mContext = null;
     private ArrayList<PbConversation> mConversations;
     private List<String> fakeData = new ArrayList<>();
+    private FirebaseListAdapter<PbConversation> mAdapter;
 
     public WidgetDataProvider(Context context, Intent intent) {
         mContext = context;
@@ -36,12 +37,16 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 
     @Override
     public void onCreate() {
-        makeFakeData();
+        getDataFromFirebase();
+        Log.d("mConversations", mConversations.toString());
+
     }
 
     @Override
     public void onDataSetChanged() {
-        makeFakeData();
+        getDataFromFirebase();
+        Log.d("mConversations", mConversations.toString());
+
     }
 
     @Override
@@ -58,15 +63,15 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
     public RemoteViews getViewAt(int position) {
         RemoteViews view = new RemoteViews(mContext.getPackageName(),
                 R.layout.widget_conversation);
-//        PbConversation conversation = mConversations.get(position);
-//        String title = conversation.getTitle();
-//        String user = conversation.getUser();
-//        String lastMessage = conversation.getLastMessage();
-//        String url = conversation.getUserImage();
-//        view.setTextViewText(R.id.tv_conversation_user, user);
-//        view.setTextViewText(R.id.tv_conversation_subject, title);
-//        view.setTextViewText(R.id.tv_conversation_last_message, lastMessage);
-        view.setTextViewText(R.id.tv_conversation_last_message, fakeData.get(position));
+        PbConversation conversation = mConversations.get(position);
+        String title = conversation.getTitle();
+        String user = conversation.getUser();
+        String lastMessage = conversation.getLastMessage();
+        String url = conversation.getUserImage();
+        view.setTextViewText(R.id.widget_conversation_user, user);
+        view.setTextViewText(R.id.widget_conversation_subject, title);
+        view.setTextViewText(R.id.widget_conversation_last_message, lastMessage);
+
         return view;
     }
 
@@ -93,48 +98,23 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
     }
 
     public void getDataFromFirebase() {
+        mConversations.clear();
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference conversationReference = FirebaseDatabase.getInstance().getReference()
                 .child("conversations")
                 .child(uid);
 
-        conversationReference.addChildEventListener(new ChildEventListener() {
+        conversationReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                PbConversation conversation = dataSnapshot.getValue(PbConversation.class);
-                mConversations.add(conversation);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                PbConversation conversation = dataSnapshot.getValue(PbConversation.class);
-                String idToFind = conversation.getId();
-                for (ListIterator<PbConversation> listIterator = mConversations.listIterator();
-                        listIterator.hasNext();) {
-                    String conversationId = listIterator.next().getId();
-                    if (conversationId.equals(idToFind)) {
-                        listIterator.remove();
-                    }
-                    listIterator.add(conversation);
-                }
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                PbConversation conversation = dataSnapshot.getValue(PbConversation.class);
-                String idToFind = conversation.getId();
-                for (ListIterator<PbConversation> listIterator = mConversations.listIterator();
-                     listIterator.hasNext();) {
-                    String conversationId = listIterator.next().getId();
-                    if (conversationId.equals(idToFind)) {
-                        listIterator.remove();
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterator<DataSnapshot> dataSnapshotIterator = dataSnapshot.getChildren().iterator();
+                while (dataSnapshotIterator.hasNext()) {
+                    DataSnapshot child = dataSnapshotIterator.next();
+                    PbConversation toAdd = child.getValue(PbConversation.class);
+                    if (!mConversations.contains(toAdd)) {
+                        mConversations.add(toAdd);
                     }
                 }
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
@@ -149,5 +129,6 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
         for (int i = 0; i < 10; i++) {
             fakeData.add("ListView item " + i);
         }
+
     }
 }

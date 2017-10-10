@@ -28,9 +28,9 @@
 
 
                 <!--<ImageView-->
-                <!--android:id="@+id/user_avatar"-->
-                <!--android:layout_width="50dp"-->
-                <!--android:layout_height="50dp" />-->
+                    <!--android:id="@+id/user_avatar"-->
+                    <!--android:layout_width="50dp"-->
+                    <!--android:layout_height="50dp" />-->
 
             </RelativeLayout>
 
@@ -64,5 +64,9 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
 
 </LinearLayout>
