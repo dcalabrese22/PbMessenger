@@ -30,7 +30,7 @@
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustResize|stateHidden"></activity>
 
-        <receiver android:name=".PbAppWidgetProvider">
+        <receiver android:name=".PbAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

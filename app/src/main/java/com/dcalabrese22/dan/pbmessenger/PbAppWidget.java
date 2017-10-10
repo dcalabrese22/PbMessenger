@@ -3,21 +3,21 @@ package com.dcalabrese22.dan.pbmessenger;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.RemoteViews;
 
 /**
  * Implementation of App Widget functionality.
  */
-public class PbAppWidgetProvider extends AppWidgetProvider {
+public class PbAppWidget extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
 
+        setRemoteAdapter(context, views);
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
@@ -38,6 +38,11 @@ public class PbAppWidgetProvider extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
+    }
+
+    private static void setRemoteAdapter(Context context, RemoteViews views) {
+        views.setRemoteAdapter(R.id.lv_widget_conversations,
+                new Intent(context, WidgetService.class));
     }
 }
 
