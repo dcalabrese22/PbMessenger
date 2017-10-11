@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.dcalabrese22.dan.pbmessenger.interfaces.ConversationClickListener;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -143,7 +142,7 @@ public class ConversationViewHolder extends RecyclerView.ViewHolder {
 
     public void setAvatar(String urlToImage, Context context) {
 
-        if (urlToImage != null || !urlToImage.equals("")) {
+        if (urlToImage != null || !urlToImage.equals("null")) {
             Picasso.with(context).load(urlToImage).into(mAvatar);
         }
     }

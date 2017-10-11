@@ -6,66 +6,66 @@ package com.dcalabrese22.dan.pbmessenger.Objects;
 
 public class PbConversation {
 
-    private String mId;
-    private String mTitle;
-    private String mUser;
-    private String mUserImage;
-    private String mLastMessage;
+    private String id;
+    private String title;
+    private String user;
+    private String userImage;
+    private String lastMessage;
 
     public PbConversation() {}
 
     public PbConversation(String id, String title, String user, String lastMessage, String userImage) {
-        mTitle = title;
-        mId = id;
-        mUser = user;
-        mLastMessage = lastMessage;
-        mUserImage = userImage;
+        this.title = title;
+        this.id = id;
+        this.user = user;
+        this.lastMessage = lastMessage;
+        this.userImage = userImage;
 
-    }
-
-    public String getUserImage() {
-        return mUserImage;
-    }
-
-    public String getLastMessage() {
-        return mLastMessage;
     }
 
     public String getId() {
-        return mId;
-    }
-
-    public String getTitle() {
-        return mTitle;
-    }
-
-    public String getUser() {
-        return mUser;
+        return id;
     }
 
     public void setId(String id) {
-        mId = id;
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public void setTitle(String title) {
-        mTitle = title;
+        this.title = title;
+    }
+
+    public String getUser() {
+        return user;
     }
 
     public void setUser(String user) {
-        mUser = user;
+        this.user = user;
     }
 
-    public void setLastMessage(String message) {
-        mLastMessage = message;
+    public String getUserImage() {
+        return userImage;
     }
 
-    public void setUserImage(String url) {
-        mUserImage = url;
+    public void setUserImage(String userImage) {
+        this.userImage = userImage;
+    }
+
+    public String getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
     }
 
     @Override
     public String toString() {
-        return mTitle;
+        return title;
     }
 
 }
