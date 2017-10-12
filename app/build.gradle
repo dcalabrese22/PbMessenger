@@ -48,6 +48,8 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
     compile 'com.firebaseui:firebase-ui-database:2.3.0'
+    compile 'com.google.code.gson:gson:2.8.0'
+
 
 }
 
