@@ -1,8 +1,9 @@
 package com.dcalabrese22.dan.pbmessenger.fragments;
 
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.os.Bundle;
-
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.dcalabrese22.dan.pbmessenger.Objects.PbConversation;
 import com.dcalabrese22.dan.pbmessenger.Objects.PbMessage;
+import com.dcalabrese22.dan.pbmessenger.PbAppWidget;
 import com.dcalabrese22.dan.pbmessenger.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -81,6 +83,10 @@ public class NewMessageFragment extends Fragment {
                             "sent");
                     Map<String, Object> map = new HashMap<>();
                     map.put("0", message);
+                    AppWidgetManager manager = AppWidgetManager.getInstance(getContext());
+                    int[] ids = manager.getAppWidgetIds(new ComponentName(getContext()
+                            .getPackageName(), PbAppWidget.class.getName()));
+                    manager.notifyAppWidgetViewDataChanged(ids, R.id.lv_widget_conversations);
                     messagesRef.child(key).updateChildren(map);
                     getActivity().getSupportFragmentManager().popBackStack();
                 }
