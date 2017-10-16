@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
+import com.dcalabrese22.dan.pbmessenger.services.WidgetService;
+
 /**
  * Implementation of App Widget functionality.
  */
