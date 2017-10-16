@@ -1,9 +1,10 @@
 package com.dcalabrese22.dan.pbmessenger.fragments;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -24,22 +25,16 @@ import com.dcalabrese22.dan.pbmessenger.ConversationViewHolder;
 import com.dcalabrese22.dan.pbmessenger.MultiSelectFirebaseRecyclerAdapter;
 import com.dcalabrese22.dan.pbmessenger.Objects.PbConversation;
 import com.dcalabrese22.dan.pbmessenger.Objects.SelectedConversation;
+import com.dcalabrese22.dan.pbmessenger.PbAppWidget;
 import com.dcalabrese22.dan.pbmessenger.R;
 import com.dcalabrese22.dan.pbmessenger.helpers.RecyclerItemClickListener;
 import com.dcalabrese22.dan.pbmessenger.interfaces.MessageExtrasListener;
 import com.dcalabrese22.dan.pbmessenger.interfaces.OnRecyclerItemClickListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -182,6 +177,16 @@ public class MessagesListFragment extends Fragment {
                         String id = selectedConversation.getConversation().getId();
                         reference.child(id).removeValue();
                         messageRef.child(id).removeValue();
+
+                        Intent intent = new Intent(getContext(), PbAppWidget.class);
+                        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+
+                        AppWidgetManager manager = AppWidgetManager.getInstance(getContext());
+                        int[] ids = manager.getAppWidgetIds(new ComponentName(getContext()
+                                .getPackageName(), PbAppWidget.class.getName()));
+                        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+                        getActivity().sendBroadcast(intent);
+
                     }
                     mSelectedConversations.clear();
                     mActionMode.setTitle("" + mSelectedConversations.size());

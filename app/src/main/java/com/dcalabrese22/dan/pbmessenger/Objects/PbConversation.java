@@ -68,5 +68,14 @@ public class PbConversation {
         return title;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        PbConversation c = (PbConversation) obj;
+        if (c.getId().equals(id)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 

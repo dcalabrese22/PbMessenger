@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -63,11 +64,13 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 
             }
         });
+        Log.d("Provider onCreate", mConversations.toString());
 
     }
 
     @Override
     public void onDataSetChanged() {
+        
     }
 
     @Override
