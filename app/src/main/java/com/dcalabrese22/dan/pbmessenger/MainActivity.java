@@ -13,6 +13,7 @@ import com.dcalabrese22.dan.pbmessenger.fragments.ChatFragment;
 import com.dcalabrese22.dan.pbmessenger.fragments.MessagesListFragment;
 import com.dcalabrese22.dan.pbmessenger.interfaces.MessageExtrasListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class MainActivity extends AppCompatActivity implements MessageExtrasListener {
 
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements MessageExtrasList
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.fragment_container, fragment)
                 .commit();
+
+        Log.d("MAIN", FirebaseInstanceId.getInstance().getToken());
 
     }
 
