@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PbMessenger</string>
+    <string name="app_name">Pb Messenger</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -31,5 +31,8 @@
     <string name="menu_item_delete">Delete</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+
+    <string name="firebase_token_pref">com.dcalabrese22.dan.pbmessenger.FIREBASE_TOKEN_KEY</string>
+    <string name="current_firebase_token">firebase_token</string>
 
 </resources>

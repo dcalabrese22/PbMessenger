@@ -11,16 +11,22 @@ public class PbConversation {
     private String user;
     private String userImage;
     private String lastMessage;
+    private String lastMessageType;
 
     public PbConversation() {}
 
-    public PbConversation(String id, String title, String user, String lastMessage, String userImage) {
+    public PbConversation(String id, String title, String user, String lastMessage, String userImage,
+                          String lastMessageType) {
         this.title = title;
         this.id = id;
         this.user = user;
         this.lastMessage = lastMessage;
         this.userImage = userImage;
+        this.lastMessageType = lastMessageType;
+    }
 
+    public String getLastMessageType() {
+        return lastMessageType;
     }
 
     public String getId() {
@@ -61,6 +67,10 @@ public class PbConversation {
 
     public void setLastMessage(String lastMessage) {
         this.lastMessage = lastMessage;
+    }
+
+    public void setLastMessageType(String lastMessageType) {
+        this.lastMessageType = lastMessageType;
     }
 
     @Override

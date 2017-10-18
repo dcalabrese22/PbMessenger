@@ -72,7 +72,7 @@ public class NewMessageFragment extends Fragment {
                     String key = uidReference.push().getKey();
 
                     PbConversation conversation = new PbConversation(key, subject.getText().toString(),
-                            mName.getText().toString(), body.getText().toString(), "null");
+                            mName.getText().toString(), body.getText().toString(), "null", "sent");
 
                     uidReference.child(key).setValue(conversation);
                     Date now = Calendar.getInstance().getTime();

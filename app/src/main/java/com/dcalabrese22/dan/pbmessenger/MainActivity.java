@@ -1,6 +1,8 @@
 package com.dcalabrese22.dan.pbmessenger;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,8 @@ import com.dcalabrese22.dan.pbmessenger.fragments.ChatFragment;
 import com.dcalabrese22.dan.pbmessenger.fragments.MessagesListFragment;
 import com.dcalabrese22.dan.pbmessenger.interfaces.MessageExtrasListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 public class MainActivity extends AppCompatActivity implements MessageExtrasListener {
@@ -35,7 +39,15 @@ public class MainActivity extends AppCompatActivity implements MessageExtrasList
         transaction.add(R.id.fragment_container, fragment)
                 .commit();
 
-        Log.d("MAIN", FirebaseInstanceId.getInstance().getToken());
+        SharedPreferences preferences = getSharedPreferences(getString(R.string.firebase_token_pref),
+                Context.MODE_PRIVATE);
+//        String refreshToken = preferences.getString(getString(R.string.current_firebase_token), null);
+        String refreshToken = FirebaseInstanceId.getInstance().getToken();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
+                .child("conversations")
+                .child("tokens");
+        reference.child(userId).child(refreshToken).setValue(true);
 
     }
 
