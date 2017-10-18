@@ -39,5 +39,8 @@ public class SelectedConversation {
         return mConversation;
     }
 
-
+    @Override
+    public String toString() {
+        return mConversation.toString();
+    }
 }

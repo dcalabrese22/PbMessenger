@@ -68,9 +68,9 @@ public class MessagesListFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_messages_list, container, false);
 
-        ProgressBar progressBar = (ProgressBar) rootView.findViewById(R.id.progress_loading_messages);
+        ProgressBar progressBar = rootView.findViewById(R.id.progress_loading_messages);
         progressBar.setVisibility(View.VISIBLE);
-        final FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.message_list_fab);
+        final FloatingActionButton fab = rootView.findViewById(R.id.message_list_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +93,7 @@ public class MessagesListFragment extends Fragment {
                 .child(mUserId);
 
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_conversations);
+        mRecyclerView = rootView.findViewById(R.id.rv_conversations);
         mAdapter = new MultiSelectFirebaseRecyclerAdapter(context, PbConversation.class,
                 R.layout.conversation, ConversationViewHolder.class,
                 reference, mListener, progressBar, mSelectedConversations);
@@ -153,6 +153,7 @@ public class MessagesListFragment extends Fragment {
             MenuInflater inflater = mode.getMenuInflater();
             inflater.inflate(R.menu.contextual_menu, menu);
             mContextMenu = menu;
+            mSelectedConversations.clear();
             return true;
         }
 
@@ -201,8 +202,6 @@ public class MessagesListFragment extends Fragment {
             mActionMode = null;
             mIsMultiSelectMode = false;
             deselectAll();
-            mSelectedConversations = new ArrayList<>();
-
         }
     };
 
@@ -239,6 +238,8 @@ public class MessagesListFragment extends Fragment {
             selected.getViewHolder().flipAvatar(selected.getSelectedView());
             selected.getSelectedView().setActivated(false);
         }
+        mSelectedConversations.clear();
+        mSelectedPbConversations.clear();
     }
 
 
