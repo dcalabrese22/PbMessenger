@@ -39,13 +39,9 @@ public class MainActivity extends AppCompatActivity implements MessageExtrasList
         transaction.add(R.id.fragment_container, fragment)
                 .commit();
 
-        SharedPreferences preferences = getSharedPreferences(getString(R.string.firebase_token_pref),
-                Context.MODE_PRIVATE);
-//        String refreshToken = preferences.getString(getString(R.string.current_firebase_token), null);
         String refreshToken = FirebaseInstanceId.getInstance().getToken();
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
-                .child("conversations")
                 .child("tokens");
         reference.child(userId).child(refreshToken).setValue(true);
 

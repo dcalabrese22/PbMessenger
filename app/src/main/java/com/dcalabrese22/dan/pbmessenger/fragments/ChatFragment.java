@@ -100,7 +100,6 @@ public class ChatFragment extends Fragment {
         });
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
-                .child("conversations")
                 .child("messages")
                 .child(mMessageId);
 

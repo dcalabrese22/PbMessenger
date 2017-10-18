@@ -59,7 +59,7 @@ public class NewMessageFragment extends Fragment {
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("conversations");
 
         final DatabaseReference uidReference = reference.child(userId);
-        final DatabaseReference messagesRef = reference.child("messages");
+        final DatabaseReference messagesRef = FirebaseDatabase.getInstance().getReference("messages");
 
         fab.setOnClickListener(new View.OnClickListener() {
 
