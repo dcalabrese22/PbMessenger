@@ -80,7 +80,8 @@ public class NewMessageFragment extends Fragment {
                             body.getText().toString(),
                             now.toString(),
                             FirebaseAuth.getInstance().getCurrentUser().getEmail().split("@")[0],
-                            "sent");
+                            "sent",
+                            now.toString());
                     Map<String, Object> map = new HashMap<>();
                     map.put("0", message);
                     AppWidgetManager manager = AppWidgetManager.getInstance(getContext());

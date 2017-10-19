@@ -11,15 +11,25 @@ public class PbMessage {
     private String date;
     private String sender;
     private String type;
+    private String timeStamp;
 
     public PbMessage() {}
 
-    public PbMessage(String id, String body, String date, String sender, String type) {
+    public PbMessage(String id, String body, String date, String sender, String type, String timeStamp) {
         messageId = id;
         this.body = body;
         this.date = date;
         this.sender = sender;
         this.type = type;
+        this.timeStamp = timeStamp;
+    }
+
+    public String getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     public String getMessageId() {

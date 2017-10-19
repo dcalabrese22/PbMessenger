@@ -128,7 +128,8 @@ public class ChatFragment extends Fragment {
                             Log.d("User name: ", name);
                             Date now = Calendar.getInstance().getTime();
                             Log.d("Now: ", now.toString());
-                            PbMessage newMessage = new PbMessage(nextKey, body, now.toString(), name, "sent");
+                            PbMessage newMessage = new PbMessage(nextKey, body, now.toString(),
+                                    name, "sent", now.toString());
                             Map<String, Object> m = new HashMap<>();
                             m.put(nextKey, newMessage);
                             messagRef.updateChildren(m);
