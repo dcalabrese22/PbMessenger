@@ -106,13 +106,14 @@ public class ChatFragment extends Fragment {
         mButtonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("conversations");
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
                 final DatabaseReference messagRef = reference.child("messages").child(mMessageId);
                 Query lastIdQuery = messagRef.orderByKey().limitToLast(1);
-                DatabaseReference conversationRef = reference.child(FirebaseAuth
+                DatabaseReference conversationRef = reference.child("conversations").child(FirebaseAuth
                         .getInstance().getCurrentUser().getUid()).child(mMessageId);
                 Map<String, Object> map = new HashMap<>();
                 map.put("lastMessage", reply.getText().toString());
+                map.put("lastMessageType", "sent");
                 conversationRef.updateChildren(map);
                 ValueEventListener valueEventListener = new ValueEventListener() {
                     @Override
