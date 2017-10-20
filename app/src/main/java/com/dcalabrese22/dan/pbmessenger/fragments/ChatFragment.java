@@ -127,9 +127,10 @@ public class ChatFragment extends Fragment {
                             String name = user.getEmail().split("@")[0];
                             Log.d("User name: ", name);
                             Date now = Calendar.getInstance().getTime();
+                            Long timeStamp = new Date().getTime();
                             Log.d("Now: ", now.toString());
                             PbMessage newMessage = new PbMessage(nextKey, body, now.toString(),
-                                    name, "sent", now.toString());
+                                    name, "sent", timeStamp);
                             Map<String, Object> m = new HashMap<>();
                             m.put(nextKey, newMessage);
                             messagRef.updateChildren(m);

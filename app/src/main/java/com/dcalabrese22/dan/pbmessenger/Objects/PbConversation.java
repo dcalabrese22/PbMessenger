@@ -12,17 +12,23 @@ public class PbConversation {
     private String userImage;
     private String lastMessage;
     private String lastMessageType;
+    private Long timeStamp;
 
     public PbConversation() {}
 
     public PbConversation(String id, String title, String user, String lastMessage, String userImage,
-                          String lastMessageType) {
+                          String lastMessageType, Long timeStamp) {
         this.title = title;
         this.id = id;
         this.user = user;
         this.lastMessage = lastMessage;
         this.userImage = userImage;
         this.lastMessageType = lastMessageType;
+        this.timeStamp = timeStamp;
+    }
+
+    public Long getTimeStamp() {
+        return timeStamp;
     }
 
     public String getLastMessageType() {
@@ -71,6 +77,10 @@ public class PbConversation {
 
     public void setLastMessageType(String lastMessageType) {
         this.lastMessageType = lastMessageType;
+    }
+
+    public void setTimeStamp(Long timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     @Override

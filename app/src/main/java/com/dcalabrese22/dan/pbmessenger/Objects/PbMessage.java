@@ -11,11 +11,11 @@ public class PbMessage {
     private String date;
     private String sender;
     private String type;
-    private String timeStamp;
+    private Long timeStamp;
 
     public PbMessage() {}
 
-    public PbMessage(String id, String body, String date, String sender, String type, String timeStamp) {
+    public PbMessage(String id, String body, String date, String sender, String type, Long timeStamp) {
         messageId = id;
         this.body = body;
         this.date = date;
@@ -24,11 +24,11 @@ public class PbMessage {
         this.timeStamp = timeStamp;
     }
 
-    public String getTimeStamp() {
+    public Long getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(String timeStamp) {
+    public void setTimeStamp(Long timeStamp) {
         this.timeStamp = timeStamp;
     }
 

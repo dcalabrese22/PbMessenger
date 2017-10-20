@@ -70,18 +70,21 @@ public class NewMessageFragment extends Fragment {
                     Toast.makeText(getContext(), R.string.missing_fields, Toast.LENGTH_SHORT).show();
                 } else {
                     String key = uidReference.push().getKey();
-
-                    PbConversation conversation = new PbConversation(key, subject.getText().toString(),
-                            mName.getText().toString(), body.getText().toString(), "null", "sent");
+                    Long timeStamp = new Date().getTime();
+                    PbConversation conversation = new PbConversation(key,
+                            subject.getText().toString(),mName.getText().toString(),
+                            body.getText().toString(), "null", "sent", timeStamp);
 
                     uidReference.child(key).setValue(conversation);
                     Date now = Calendar.getInstance().getTime();
+                    Long time = new Date().getTime();
+
                     PbMessage message = new PbMessage("0",
                             body.getText().toString(),
                             now.toString(),
                             FirebaseAuth.getInstance().getCurrentUser().getEmail().split("@")[0],
                             "sent",
-                            now.toString());
+                            time);
                     Map<String, Object> map = new HashMap<>();
                     map.put("0", message);
                     AppWidgetManager manager = AppWidgetManager.getInstance(getContext());
