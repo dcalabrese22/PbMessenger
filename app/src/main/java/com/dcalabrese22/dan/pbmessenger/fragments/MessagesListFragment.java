@@ -34,6 +34,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -93,10 +94,13 @@ public class MessagesListFragment extends Fragment {
                 .child(mUserId);
 
 
+
+
         mRecyclerView = rootView.findViewById(R.id.rv_conversations);
         mAdapter = new MultiSelectFirebaseRecyclerAdapter(context, PbConversation.class,
                 R.layout.conversation, ConversationViewHolder.class,
                 reference, mListener, progressBar, mSelectedConversations);
+
 
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), mRecyclerView,
                 new OnRecyclerItemClickListener() {
@@ -105,7 +109,6 @@ public class MessagesListFragment extends Fragment {
                     public void onItemClick(View view, int position) {
                         if (mIsMultiSelectMode) {
                             multiSelect(view, position);
-                            Log.d("MessageListFrag onClick", String.valueOf(mIsMultiSelectMode));
                         } else {
                             PbConversation itemClicked = mAdapter.getItem(position);
                             String id = itemClicked.getId();
@@ -117,7 +120,6 @@ public class MessagesListFragment extends Fragment {
 
                     @Override
                     public void OnItemLongClick(View view, int position) {
-                        Log.d("MessageListFrag onLong", String.valueOf(mIsMultiSelectMode));
 
                         if (!mIsMultiSelectMode) {
                             mIsMultiSelectMode = true;
@@ -131,8 +133,9 @@ public class MessagesListFragment extends Fragment {
                     }
                 }));
         LinearLayoutManager ll = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(ll);
 
+        mRecyclerView.setLayoutManager(ll);
+        ll.setReverseLayout(true);
         mRecyclerView.setAdapter(mAdapter);
 
 
