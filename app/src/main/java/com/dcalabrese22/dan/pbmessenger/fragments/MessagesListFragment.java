@@ -173,7 +173,6 @@ public class MessagesListFragment extends Fragment {
                                 .child(mUserId);
 
                         DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference()
-                                .child("conversations")
                                 .child("messages");
                         String id = selectedConversation.getConversation().getId();
                         reference.child(id).removeValue();
