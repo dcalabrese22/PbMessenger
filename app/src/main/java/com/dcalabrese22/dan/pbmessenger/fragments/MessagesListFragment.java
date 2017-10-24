@@ -177,7 +177,9 @@ public class MessagesListFragment extends Fragment {
                         DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference()
                                 .child("messages");
                         String id = selectedConversation.getConversation().getId();
-                        reference.child(id).removeValue();
+                        String pushKey = selectedConversation.getConversation().getPushKey();
+                        Log.d("selected id: ", id);
+                        reference.child(pushKey).removeValue();
                         messageRef.child(id).removeValue();
 
                         Intent intent = new Intent(getContext(), PbAppWidget.class);

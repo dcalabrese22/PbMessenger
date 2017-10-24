@@ -13,11 +13,12 @@ public class PbConversation {
     private String lastMessage;
     private String lastMessageType;
     private Long timeStamp;
+    private String pushKey;
 
     public PbConversation() {}
 
     public PbConversation(String id, String title, String user, String lastMessage, String userImage,
-                          String lastMessageType, Long timeStamp) {
+                          String lastMessageType, Long timeStamp, String pushKey) {
         this.title = title;
         this.id = id;
         this.user = user;
@@ -25,6 +26,15 @@ public class PbConversation {
         this.userImage = userImage;
         this.lastMessageType = lastMessageType;
         this.timeStamp = timeStamp;
+        this.pushKey = pushKey;
+    }
+
+    public String getPushKey() {
+        return pushKey;
+    }
+
+    public void setPushKey(String pushKey) {
+        this.pushKey = pushKey;
     }
 
     public Long getTimeStamp() {

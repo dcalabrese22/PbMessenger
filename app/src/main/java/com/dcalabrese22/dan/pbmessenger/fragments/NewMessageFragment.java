@@ -73,25 +73,25 @@ public class NewMessageFragment extends Fragment {
                     Long timeStamp = new Date().getTime();
                     PbConversation conversation = new PbConversation(key,
                             subject.getText().toString(),mName.getText().toString(),
-                            body.getText().toString(), "null", "sent", timeStamp);
+                            body.getText().toString(), "null", "sent", timeStamp, key);
 
                     uidReference.child(key).setValue(conversation);
-                    Date now = Calendar.getInstance().getTime();
-                    Long time = new Date().getTime();
-
-                    PbMessage message = new PbMessage("0",
-                            body.getText().toString(),
-                            now.toString(),
-                            FirebaseAuth.getInstance().getCurrentUser().getEmail().split("@")[0],
-                            "sent",
-                            time);
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("0", message);
-                    AppWidgetManager manager = AppWidgetManager.getInstance(getContext());
-                    int[] ids = manager.getAppWidgetIds(new ComponentName(getContext()
-                            .getPackageName(), PbAppWidget.class.getName()));
-                    manager.notifyAppWidgetViewDataChanged(ids, R.id.lv_widget_conversations);
-                    messagesRef.child(key).updateChildren(map);
+//                    Date now = Calendar.getInstance().getTime();
+//                    Long time = new Date().getTime();
+//
+//                    PbMessage message = new PbMessage("0",
+//                            body.getText().toString(),
+//                            now.toString(),
+//                            FirebaseAuth.getInstance().getCurrentUser().getEmail().split("@")[0],
+//                            "sent",
+//                            time);
+//                    Map<String, Object> map = new HashMap<>();
+//                    map.put("0", message);
+//                    AppWidgetManager manager = AppWidgetManager.getInstance(getContext());
+//                    int[] ids = manager.getAppWidgetIds(new ComponentName(getContext()
+//                            .getPackageName(), PbAppWidget.class.getName()));
+//                    manager.notifyAppWidgetViewDataChanged(ids, R.id.lv_widget_conversations);
+//                    messagesRef.child(key).updateChildren(map);
                     getActivity().getSupportFragmentManager().popBackStack();
                 }
             }
