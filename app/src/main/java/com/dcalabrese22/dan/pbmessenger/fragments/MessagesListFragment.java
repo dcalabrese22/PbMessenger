@@ -93,8 +93,7 @@ public class MessagesListFragment extends Fragment {
                 .child("conversations")
                 .child(mUserId);
 
-
-
+        reference.orderByChild("timeStamp");
 
         mRecyclerView = rootView.findViewById(R.id.rv_conversations);
         mAdapter = new MultiSelectFirebaseRecyclerAdapter(context, PbConversation.class,
