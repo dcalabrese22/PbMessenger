@@ -106,15 +106,11 @@ public class ChatFragment extends Fragment {
         mButtonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                final DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
                 final DatabaseReference messagRef = reference.child("messages").child(mMessageId);
                 Query lastIdQuery = messagRef.orderByKey().limitToLast(1);
-                DatabaseReference conversationRef = reference.child("conversations").child(FirebaseAuth
-                        .getInstance().getCurrentUser().getUid()).child(mMessageId);
-                Map<String, Object> map = new HashMap<>();
-                map.put("lastMessage", reply.getText().toString());
-                map.put("lastMessageType", "sent");
-                conversationRef.updateChildren(map);
+                final DatabaseReference conversationRef = reference.child("conversations").child(FirebaseAuth
+                        .getInstance().getCurrentUser().getUid());
                 ValueEventListener valueEventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -122,7 +118,7 @@ public class ChatFragment extends Fragment {
                             PbMessage message = snapshot.getValue(PbMessage.class);
                             final String lastKey = message.getMessageId();
                             String nextKey = Integer.toString(Integer.parseInt(lastKey) + 1);
-                            String body = reply.getText().toString();
+                            final String body = reply.getText().toString();
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             String name = user.getEmail().split("@")[0];
                             Log.d("User name: ", name);
@@ -135,6 +131,24 @@ public class ChatFragment extends Fragment {
                             m.put(nextKey, newMessage);
                             messagRef.updateChildren(m);
                             reply.getText().clear();
+                            DatabaseReference pushKeyRef = reference.child("pushKeys")
+                                    .child(mMessageId);
+                            pushKeyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    String pushKey = dataSnapshot.getValue(String.class);
+                                    conversationRef.child(pushKey).child("lastMessage").setValue(body);
+                                    conversationRef.child(pushKey).child("lastMessageType").setValue("sent");
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+
                         }
                     }
 
