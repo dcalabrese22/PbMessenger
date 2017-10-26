@@ -34,7 +34,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -177,9 +176,8 @@ public class MessagesListFragment extends Fragment {
                         DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference()
                                 .child("messages");
                         String id = selectedConversation.getConversation().getId();
-                        String pushKey = selectedConversation.getConversation().getPushKey();
                         Log.d("selected id: ", id);
-                        reference.child(pushKey).removeValue();
+                        reference.child(id).removeValue();
                         messageRef.child(id).removeValue();
 
                         Intent intent = new Intent(getContext(), PbAppWidget.class);

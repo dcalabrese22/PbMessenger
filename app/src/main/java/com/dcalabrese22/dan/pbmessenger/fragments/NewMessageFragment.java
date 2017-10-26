@@ -1,8 +1,6 @@
 package com.dcalabrese22.dan.pbmessenger.fragments;
 
 
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -15,8 +13,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.dcalabrese22.dan.pbmessenger.Objects.PbConversation;
-import com.dcalabrese22.dan.pbmessenger.Objects.PbMessage;
-import com.dcalabrese22.dan.pbmessenger.PbAppWidget;
 import com.dcalabrese22.dan.pbmessenger.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,11 +24,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class NewMessageFragment extends Fragment {
@@ -71,7 +64,7 @@ public class NewMessageFragment extends Fragment {
                 } else {
                     String key = uidReference.push().getKey();
                     Long timeStamp = new Date().getTime();
-                    PbConversation conversation = new PbConversation(key,
+                    PbConversation conversation = new PbConversation(null,
                             subject.getText().toString(),mName.getText().toString(),
                             body.getText().toString(), "null", "sent", timeStamp, key);
 

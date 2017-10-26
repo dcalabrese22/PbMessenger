@@ -114,6 +114,8 @@ public class ChatFragment extends Fragment {
                 ValueEventListener valueEventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.d("Key", dataSnapshot.getKey());
+                        String id = dataSnapshot.getKey();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             PbMessage message = snapshot.getValue(PbMessage.class);
                             final String lastKey = message.getMessageId();
@@ -129,26 +131,12 @@ public class ChatFragment extends Fragment {
                                     name, "sent", timeStamp);
                             Map<String, Object> m = new HashMap<>();
                             m.put(nextKey, newMessage);
+                            Map<String, Object> m2 = new HashMap<>();
+                            m2.put("lastMessage", body);
+                            m2.put("lastMessageType", "sent");
+                            conversationRef.child(id).updateChildren(m2);
                             messagRef.updateChildren(m);
                             reply.getText().clear();
-                            DatabaseReference pushKeyRef = reference.child("pushKeys")
-                                    .child(mMessageId);
-                            pushKeyRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    String pushKey = dataSnapshot.getValue(String.class);
-                                    conversationRef.child(pushKey).child("lastMessage").setValue(body);
-                                    conversationRef.child(pushKey).child("lastMessageType").setValue("sent");
-
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });
-
-
                         }
                     }
 
